@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/momo/static/css/main.2dcc49f0.css",
+    "main.js": "/momo/static/js/main.3eb2d5d6.js",
+    "static/js/453.b7ff7f38.chunk.js": "/momo/static/js/453.b7ff7f38.chunk.js",
+    "index.html": "/momo/index.html",
+    "main.2dcc49f0.css.map": "/momo/static/css/main.2dcc49f0.css.map",
+    "main.3eb2d5d6.js.map": "/momo/static/js/main.3eb2d5d6.js.map",
+    "453.b7ff7f38.chunk.js.map": "/momo/static/js/453.b7ff7f38.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2dcc49f0.css",
+    "static/js/main.3eb2d5d6.js"
+  ]
+}
