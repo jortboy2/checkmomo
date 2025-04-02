@@ -301,7 +301,7 @@ function Dashboard() {
       }
 
       // Dừng 3 giây trước khi chạy số tiếp theo
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 3000));
     }
 
     setPhoneNumbers(""); // XÓA Ô NHẬP SAU KHI GỬI
