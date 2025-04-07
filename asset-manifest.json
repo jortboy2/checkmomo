@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/checkmomo/static/css/main.2dcc49f0.css",
-    "main.js": "/checkmomo/static/js/main.77c839a4.js",
+    "main.js": "/checkmomo/static/js/main.285dcd51.js",
     "static/js/453.93e844a6.chunk.js": "/checkmomo/static/js/453.93e844a6.chunk.js",
     "index.html": "/checkmomo/index.html",
     "main.2dcc49f0.css.map": "/checkmomo/static/css/main.2dcc49f0.css.map",
-    "main.77c839a4.js.map": "/checkmomo/static/js/main.77c839a4.js.map",
+    "main.285dcd51.js.map": "/checkmomo/static/js/main.285dcd51.js.map",
     "453.93e844a6.chunk.js.map": "/checkmomo/static/js/453.93e844a6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2dcc49f0.css",
-    "static/js/main.77c839a4.js"
+    "static/js/main.285dcd51.js"
   ]
 }
