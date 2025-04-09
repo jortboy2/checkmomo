@@ -18,19 +18,22 @@ function Sidebar({ setActiveMenu }) {
   );
 }
 
-
 function Dashboard() {
-  const baseUrl = "https://apicheckmomo.onrender.com";
+  const baseUrl = "https://vannghimomo.onrender.com";
+  const [selectedPercent, setSelectedPercent] = useState(0);
   const [data, setData] = useState([]);
   const [phoneNumbers, setPhoneNumbers] = useState("");
   const [phoneCount, setphoneCount] = useState([]);
   const [savedPhones, setSavedPhones] = useState([]); // LƯU CÁC SỐ ĐÃ GỬI
   const [fromDate, setFromDate] = useState(""); // Ngày bắt đầu
   const [toDate, setToDate] = useState("");
+  const [accountStatus, setAccountStatus] = useState([]); // Lưu trạng thái tài khoản
+
   const runSubmission = async () => {
     await handleSubmit(); // Gọi hàm submit ban đầu
     setTimeout(runSubmission, 5000); // Lặp lại sau 5 giây
   };
+
   const handleSubmit = async () => {
     const phonesArray = phoneNumbers
       .split("\n")
@@ -88,7 +91,7 @@ function Dashboard() {
       await new Promise((resolve) => setTimeout(resolve, 2300));
     }
 
-    setPhoneNumbers(""); 
+    setPhoneNumbers("");
   };
 
   const handleDisablePaylayter = async (phone) => {
@@ -109,6 +112,35 @@ function Dashboard() {
       );
     }
   };
+
+  const check_accountmomo = async () => {
+    const phonesArray = phoneNumbers
+      .split("\n")
+      .map((phone) => phone.trim())
+      .filter((phone) => phone);
+    const results = [];
+
+    try {
+      const response = await axios.post(
+        `${baseUrl}/check-accountmomo`,
+        { phone: phonesArray }
+      );
+      response.data.forEach((data, index) => {
+        results.push({ userId: phonesArray[index], valid: data.valid });
+      });
+      setAccountStatus(results);
+    } catch (error) {
+      phonesArray.forEach((phone) => {
+        console.error(`Lỗi khi kiểm tra tài khoản ${phone}:`, error);
+      });
+    }
+  };
+
+  const totalMoney = data.reduce((sum, item) => {
+    return sum + (item.totalMoney || 0);
+  }, 0);
+  const calculatedPercentMoney = totalMoney * selectedPercent;
+(async () =>{})()
   return (
     <div className="bg-white shadow-2xl rounded-3xl p-10 w-full border border-green-300">
       <h1 className="text-4xl font-extrabold text-center text-green-600 mb-8">
@@ -150,16 +182,6 @@ function Dashboard() {
             onChange={(e) => setPhoneNumbers(e.target.value)}
           ></textarea>
         </div>
-        {/* <div>
-          <label className="block text-lg font-medium text-gray-700 mb-3">
-            Mật khẩu
-          </label>
-          <input
-            type="text"
-            className="w-full p-4 border border-green-400 rounded-xl focus:ring-4 focus:ring-green-500 focus:outline-none bg-green-50"
-            placeholder="Nhập mật khẩu"
-          />
-        </div> */}
       </div>
       <span className="text-[20px]">
         Đã thêm <span className="text-[red]">{phoneCount.length}</span> số điện
@@ -172,6 +194,14 @@ function Dashboard() {
       >
         Xác nhận
       </button>
+
+      <button
+        className="mt-6 w-full bg-green-500 text-white py-3 rounded-2xl hover:bg-green-600 transition-all text-lg shadow-lg"
+        onClick={check_accountmomo}
+      >
+        Kiểm tra ví hủy chưa
+      </button>
+
       <div className="mt-10 overflow-x-auto">
         <table className="w-full border-collapse border border-green-400 shadow-lg rounded-xl">
           <thead className="bg-green-500 text-white">
@@ -224,8 +254,73 @@ function Dashboard() {
                 </td>
               </tr>
             ))}
+            {accountStatus.map((account, index) => (
+              <tr key={index} className="odd:bg-green-50 even:bg-green-100">
+                <td className="py-3 px-4 text-center">
+                  {data.length + index + 1}
+                </td>
+                <td className="py-3 px-4">{account.userId}</td>
+                <td className="py-3 px-4">—</td>
+                <td className="py-3 px-4">—</td>
+                <td className="py-3 px-4">—</td>
+                <td className="py-3 px-4">—</td>
+                <td className="py-3 px-4">—</td>
+                <td className="py-3 px-4">
+                  {account.valid ? (
+                    <button className="text-[green] text-[20px]">
+                      Acc Chưa Hủy
+                    </button>
+                  ) : (
+                    <button className="text-[red] text-[20px]">
+                      Acc Đã Hủy
+                    </button>
+                  )}
+                </td>
+                <td className="py-3 px-4">—</td>
+              </tr>
+            ))}
           </tbody>
         </table>
+        <div className="mt-4 p-4 bg-green-100 rounded-xl border border-green-300">
+          <p className="text-xl font-semibold">
+            Tổng tiền:{" "}
+            <span className="text-green-700">
+              {totalMoney.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
+            </span>
+          </p>
+
+          <div className="mt-2 flex items-center gap-4">
+            <label className="font-medium">Chọn phần trăm:</label>
+            {[0.3, 0.4, 0.5].map((percent) => (
+              <button
+                key={percent}
+                onClick={() => setSelectedPercent(percent)}
+                className={`px-4 py-2 rounded-xl border ${
+                  selectedPercent === percent
+                    ? "bg-green-600 text-white"
+                    : "bg-white hover:bg-green-200"
+                }`}
+              >
+                {percent}%
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-3 text-lg font-medium">
+            Tiền sau khi nhân:{" "}
+            <span className="text-red-600">
+              {calculatedPercentMoney.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })}
+            </span>
+          </p>
+        </div>
       </div>
     </div>
   );
