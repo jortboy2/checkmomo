@@ -31,7 +31,7 @@ function Dashboard() {
 
   const runSubmission = async () => {
     await handleSubmit(); // Gọi hàm submit ban đầu
-    setTimeout(runSubmission, 5000); // Lặp lại sau 5 giây
+    // setTimeout(runSubmission, 5000); // Lặp lại sau 5 giây
   };
 
   const handleSubmit = async () => {
